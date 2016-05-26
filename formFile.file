@@ -1,0 +1,18 @@
+# formula is how data is processed from user input and outputs the results
+def formula(data):
+	##############################################################################
+	# Input forumla for calculations here. The formula must return a variable of #
+	# the desired output. Default return variable is 'answer'.                   #
+	##############################################################################
+
+	return answer
+
+
+
+def graphFormula(data):
+        ##############################################################################
+	# Input forumla for the graph here. The formula must return a list of        #
+	# the desired outputs. Default return variable is 'answer'.                  #
+	##############################################################################
+        
+	return answer
