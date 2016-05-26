@@ -23,6 +23,7 @@ Step 7: Compile program.
 # Important notes
 
 FRAMEWORK INFORMATION
+
 --- The data type you choose for each label determines if the program will check it for an accepted input. String data types are not checked, Numbers data type will only allow numerical values. If imporper data is entered into the program, the entry will be deleted and highlighted when the 'Calculate' or 'Graph' buttons are pressed, in addition to a pop up warning.
 
 --- When choosing a place to save the program, make sure the program has access to the Objects.py and Graph.py files. Either make a copy of those files in the program location or change the program to locate the files in a different location.
