@@ -1,0 +1,101 @@
+
+
+from Tkinter import *
+import Objects
+import tkSimpleDialog
+import tkMessageBox
+import Graph
+import Formula
+
+class Program(Frame):
+        
+        def __init__(self, info):
+                # Preparing variables 
+                self.axisLabels = info.pop(-1)
+                self.inputs = []
+
+                # Setting frame properties
+                Frame.__init__(self)
+                self.master.title("")
+                self.grid()
+
+                # Calculating window size
+                yWindow = str((len(info) * 22) + 155)
+                self.master.geometry("500x" + yWindow)
+                #self.config(bg = 'black')
+
+                # Creating panes
+                self.infoPane = Frame(self, relief = 'raised', borderwidth = 3, padx = 10)
+                self.answerPane = Frame(self)
+                self.answerPane.rowconfigure(0, weight = 1)
+                self.barPane1 = Frame(self)
+                self.barPane2 = Frame(self)
+                self.infoPane.grid(pady = 10, column = 1)
+                self.answerPane.grid(row = 0, column = 3)
+                self.barPane1.grid(row = 0, column = 0, padx = 10)
+                self.barPane2.grid(row = 0, column = 2, padx = 55)
+
+                for x in range(len(info)):
+                        self.inputs.append(Objects.listInputs(self.infoPane, info[x], x))
+
+                # Creating buttons
+                self.button = Button(self.infoPane, text = "Calculate", command = self.calculate)
+                self.button.grid(columnspan = 2, pady = 10)
+
+                if(self.axisLabels != None):
+                        self.graphButton = Button(self.infoPane, text = "View Graph", command = self.graph)
+                        self.graphButton.grid(columnspan = 2, pady = 10)
+                        self.warningLabel = Label(self.infoPane, text = "Program must be rerun\n after graph is closed")
+                        self.warningLabel.grid(columnspan = 2)
+                # Creating answer label
+                self.answerLabel = Label(self.answerPane, justify = 'left')
+                self.answerLabel.grid()
+
+        def calculate(self):
+                formulaList = []
+                errorFlag = False
+                answer = []
+                for x in range(len(self.inputs)):
+                        input = self.inputs[x].getData()
+                        type = self.inputs[x].getType()
+                        if (type == 'Numbers'):
+                                try:
+                                        input = float(input)
+                                        self.inputs[x].highlightWhite()
+                                except (ValueError, TypeError):
+                                        self.inputs[x].highlightRed()
+                                        self.inputs[x].deleteData()
+                                        input = None
+                                        errorFlag = True
+                        formulaList.append(input)
+                if (errorFlag == True):
+                        tkMessageBox.showwarning('Error', 'Highlighted fields only accept numerical values!')
+                else:
+                        answer = Formula.formula(formulaList)
+                        self.answerLabel['text'] = answer
+
+        def graph(self):
+                formulaList = []
+                errorFlag = False
+                answer = []
+                for x in range(len(self.inputs)):
+                        input = self.inputs[x].getData()
+                        type = self.inputs[x].getType()
+                        if (type == True):
+                                try:
+                                        input = float(input)
+                                        self.inputs[x].highlightWhite()
+                                except (ValueError, TypeError):
+                                        self.inputs[x].highlightRed()
+                                        self.inputs[x].deleteData()
+                                        input = None
+                                        errorFlag = True
+                        formulaList.append(input)
+                if (errorFlag == True):
+                        tkMessageBox.showwarning('Error', 'Highlighted fields only accept numerical values!')
+                else:
+                        graphData = Formula.graphFormula(formulaList)                      
+                        Graph.makeGraph(graphData, self.axisLabels)  
+                
+
+Program(input).mainloop()
